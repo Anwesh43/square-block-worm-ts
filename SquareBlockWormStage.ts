@@ -6,9 +6,10 @@ const scGap : number = 0.05
 const scDiv : number = 0.51
 const strokeFactor : number = 90
 const sizeFactor : number = 1
-const rSizeFactor : number = 3
+const rSizeFactor : number = 4
 const foreColor : string = "#4CAF50"
 const backColor : string = "#BDBDBD"
+const delay : number = 20
 
 const maxScale : Function = (scale : number, i : number, n : number) : number => {
     return Math.max(0, scale - i / n)
@@ -30,7 +31,7 @@ const updateValue : Function = (scale : number, dir : number, a : number, b : nu
 }
 
 const drawSBWNode : Function = (context : CanvasRenderingContext2D, i : number, scale : number) => {
-    const gap : number = h / (nodes + 1)
+    const gap : number = h / (nodes + 2)
     const size : number = gap / sizeFactor
     const rSize : number = size / rSizeFactor
     context.strokeStyle = foreColor
@@ -38,12 +39,12 @@ const drawSBWNode : Function = (context : CanvasRenderingContext2D, i : number, 
     context.lineWidth = Math.min(w, h) / strokeFactor
     context.lineCap = 'round'
     context.save()
-    context.translate(w / 2, gap * (i + 1))
+    context.translate(w / 2, gap * (i+ 1))
     for (var j = 0; j < squares; j++) {
         const sc : number = divideScale(scale, j, squares)
         context.save()
         context.translate(0, size * sc)
-
+        context.fillRect(-rSize / 2, -rSize / 2, rSize, rSize)
         context.restore()
     }
     context.beginPath()
@@ -118,7 +119,7 @@ class Animator {
     start(cb : Function) {
         if (!this.animated) {
             this.animated = true
-            this.interval = setInterval(cb, 50)
+            this.interval = setInterval(cb, delay)
         }
     }
 
