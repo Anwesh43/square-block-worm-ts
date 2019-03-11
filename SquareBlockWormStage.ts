@@ -190,3 +190,25 @@ class SquareBlockWorm {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    sbw : SquareBlockWorm = new SquareBlockWorm()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.sbw.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.sbw.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.sbw.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
