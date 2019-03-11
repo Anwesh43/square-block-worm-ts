@@ -29,6 +29,30 @@ const updateValue : Function = (scale : number, dir : number, a : number, b : nu
     return mirrorValue(scale, a, b) * dir * scGap
 }
 
+const drawSBWNode : Function = (context : CanvasRenderingContext2D, i : number, scale : number) => {
+    const gap : number = h / (nodes + 1)
+    const size : number = gap / sizeFactor
+    const rSize : number = size / rSizeFactor
+    context.strokeStyle = foreColor
+    context.fillStyle = foreColor
+    context.lineWidth = Math.min(w, h) / strokeFactor
+    context.lineCap = 'round'
+    context.save()
+    context.translate(w / 2, gap * (i + 1))
+    for (var j = 0; j < squares; j++) {
+        const sc : number = divideScale(scale, j, squares)
+        context.save()
+        context.translate(0, size * sc)
+
+        context.restore()
+    }
+    context.beginPath()
+    context.moveTo(0, size * divideScale(scale, 1, 2))
+    context.lineTo(0, size * divideScale(scale, 0, 2))
+    context.stroke()
+    context.restore()
+}
+
 class SquareBlockWormStage {
     canvas : HTMLCanvasElement = document.createElement('canvas')
     context : CanvasRenderingContext2D
@@ -83,7 +107,7 @@ class State {
 }
 
 class Animator {
-  
+
     animated : boolean = false
     interval : number
 
